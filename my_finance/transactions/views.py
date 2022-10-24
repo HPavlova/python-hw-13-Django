@@ -1,9 +1,114 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.urls import reverse
+from django.utils import timezone
+from models import Income, Expense, CategoryIncome, CategoryExpense
+now = timezone.now()
+
 
 # Create your views here.
-
-from django.http import HttpResponse
-
-
 def index(request):
-    return HttpResponse("Hello, world. You're at the transactions index.")
+    if request.user.is_authenticated:
+        return render(request, 'transactions/transactions.html')
+
+
+@login_required(login_url='/auth/login')
+def transactions(request):
+    user = request.user
+    category_income = CategoryIncome.objects.filter(user=user)
+    category_expense = CategoryExpense.objects.filter(user=user)
+    context = {
+        'category_income': category_income,
+        'category_expense': category_expense,
+    }
+    return render(request, 'transactions/transactions.html', context)
+
+
+@login_required(login_url='/auth/login')
+def report(request):
+    user = request.user
+    incomes = Income.objects.filter(user=user).order_by('-created_at')
+    expenses = Expense.objects.filter(user=user).order_by('-created_at')
+    incomes_total = sum([i.amount for i in incomes])
+    expense_total = sum([e.amount for e in expenses])
+    context = {
+        'incomes': incomes,
+        'expenses': expenses,
+        'incomes_total': incomes_total,
+        'expense_total': expense_total,
+    }
+    return render(request, 'transactions/report.html', context)
+
+
+@login_required(login_url='/auth/login')
+def create_income_transaction(request):
+    if request.method == 'POST':
+        amount = request.POST['amount']
+        created_at = request.POST['created_at']
+        desc = request.POST['desc']
+        category = request.POST['category']
+        if not amount:
+            messages.add_message(request, messages.ERROR, 'Amount is required')
+            return render(request, 'transactions/transactions.html')
+        if created_at == '':
+            created_at = now
+        new_income = Income(amount=amount, created_at=created_at, desc=desc, category=category)
+        new_income.user_id = request.user.id
+        new_income.save()
+        messages.success(request, 'Transaction added!')
+        return
+    return render(request, 'transactions/transactions.html')
+
+
+@login_required(login_url='/auth/login')
+def create_expense_transaction(request):
+    if request.method == 'POST':
+        amount = request.POST['amount']
+        created_at = request.POST['created_at']
+        desc = request.POST['desc']
+        category = request.POST['category']
+        if not amount:
+            messages.add_message(request, messages.ERROR, 'Amount is required')
+            return render(request, 'transactions/transactions.html')
+        if created_at == '':
+            created_at = now
+        new_expense = Expense(amount=amount, created_at=created_at, desc=desc, category=category)
+        new_expense.user_id = request.user.id
+        new_expense.save()
+        messages.success(request, 'Transaction added!')
+        return
+    return render(request, 'transactions/transactions.html')
+
+
+@login_required(login_url='/auth/login')
+def delete_income_transaction(request, income_id):
+    income = get_object_or_404(Income, pk=income_id, user=request.user)
+    income.delete()
+    return redirect((reverse('transactions/report.html')))
+
+
+@login_required(login_url='/auth/login')
+def delete_expense_transaction(request, expense_id):
+    expense = get_object_or_404(Expense, pk=expense_id, user=request.user)
+    expense.delete()
+    return redirect((reverse('transactions/report.html')))
+
+
+@login_required(login_url='/auth/login')
+def filter_transaction(request):
+    if request.method == 'POST':
+        from_date = request.POST['from_date']
+        to_date = request.POST['to_date']
+        if from_date == '':
+            from_date = now - timezone.timedelta(days=360)
+        if to_date == '':
+            to_date = now
+        incomes = Income.objects.filter(created_at__range=[from_date, to_date])
+        expenses = Expense.objects.filter(created_at__range=[from_date, to_date])
+        context = {
+            'incomes': incomes,
+            'expenses': expenses,
+        }
+        return render('transactions/report.html', context)
+    return redirect((reverse('transactions/report.html')))
