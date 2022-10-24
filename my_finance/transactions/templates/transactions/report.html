@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block header %}<h1 class="content__title">Transactions</h1>{% endblock %}
+{% block content %}
+
+<div class="table__wrapper">
+  <h2 class="option__title">Report</h2>
+    <form  class="filter" method="post" action="/transactions:filter">
+        <label class="filter__label">from
+            <input class="filter__input" id="from_date" name="from_date" type="date">
+        </label>
+        <label class="filter__label">to
+            <input class="filter__input" id="to_date" name="to_date" type="date">
+        </label>
+        <button class="filter__button">Filter</button>
+    </form>
+  <table class="table">
+      <caption>Incomes</caption>
+    <thead>
+      <tr>
+        <th>Transactions</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th>Desc</th>
+        <th>Date</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+      <tfoot>
+        <tr>
+            <td colspan="6">SUM</td>
+            <td>{{incomes_total}}</td>
+        </tr>
+      </tfoot>
+    <tbody>
+      {% for i in incomes %}
+      <tr>
+        <td>income</td>
+        <td>{{i['amount']}}</td>
+        <td>{{i['category']}}</td>
+        <td>{{i['desc']}}</td>
+        <td>{{i['date']}}</td>
+        <td>
+            <form method="post" action="/transactions/delete/{{transaction.id}}">
+            <button class="table__button">-</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <table class="table">
+      <caption>Expenses</caption>
+    <thead>
+      <tr>
+        <th>Transactions</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th>Desc</th>
+        <th>Date</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+      <tfoot>
+        <tr>
+            <td colspan="6">SUM</td>
+            <td>{{expense_total}}</td>
+        </tr>
+      </tfoot>
+    <tbody>
+      {% for e in expenses %}
+      <tr>
+        <td>expense</td>
+        <td>{{e['amount']}}</td>
+        <td>{{e['category']}}</td>
+        <td>{{e['desc']}}</td>
+        <td>{{e['date']}}</td>
+        <td>
+            <form method="post" action="/transactions/delete/{{transaction.id}}">
+            <button class="table__button">-</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

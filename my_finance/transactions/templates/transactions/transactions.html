@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block header %}
+<h1 class="content__title">Transactions</h1>{% endblock %}
+{% block content %}
+<div class="option__wrapper">
+  <div class="income__container">
+    <h2 class="option__title">Incomes</h2>
+    <form class="option__form" method="POST" action="/transactions">
+        <div>
+        <label for="amount_income" class="option__label">Amount</label>
+        <input
+                class="option__input"
+                id="amount_income"
+                name="amount"
+                placeholder=0
+                required
+                type="number"
+        />
+        </div>
+        <div>
+        <label for="date_income" class="option__label">Date</label>
+        <input
+                class="option__input"
+                id="date_income"
+                name="created_at"
+                placeholder=0
+                required
+                type="date"
+        />
+        </div>
+        <div>
+        <label for="desc_income" class="option__label">Description</label>
+        <input
+                class="option__input"
+                id="desc_income"
+                name="desc"
+                placeholder=0
+                required
+                type="text"
+        />
+        </div>
+        <div>
+        <label for="category_income" class="option__label">Category</label>
+        <select id="category_income" name="category" class="option__input" size="3">
+            {% for с in category_income %}
+            <option>c</option>
+            {% endfor %}
+        </select>
+        </div>
+        <button class="button" type="submit">Add Income</button>
+    </form>
+  </div>
+
+  <div class="expense__container">
+    <h2 class="title">Expenses</h2>
+    <form class="option__form" method="POST" action="/transactions">
+        <div>
+        <label for="amount_expense" class="option__label">Amount</label>
+        <input
+                class="option__input"
+                id="amount_expense"
+                name="amount"
+                placeholder=0
+                required
+                type="number"
+        />
+        </div>
+        <div>
+        <label for="date_expense" class="option__label">Date</label>
+        <input
+                class="option__input"
+                id="date_expense"
+                name="created_at"
+                placeholder=0
+                required
+                type="date"
+        />
+        </div>
+        <div>
+        <label for="desc_expense" class="option__label">Description</label>
+        <input
+                class="option__input"
+                id="desc_expense"
+                name="desc"
+                placeholder=0
+                required
+                type="text"
+        />
+        </div>
+        <div>
+        <label for="category_expense" class="option__label">Category</label>
+        <select id="category_expense" name="category" class="option__input" size="3">
+            {% for с in category_expense %}
+            <option>c</option>
+            {% endfor %}
+        </select>
+        </div>
+        <button class="button" type="submit">Add Expense</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
