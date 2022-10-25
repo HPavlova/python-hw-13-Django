@@ -29,7 +29,10 @@
       <section class="content">
         {% block header %}
         <h1 class="content__title">Welcome to My Finance app !</h1>
-        {% endblock %} {% block content %}{% endblock %}
+        {% endblock %} {% block content %} {% if messages %}{% for message in messages %}
+        <p>{{message}}</p>
+        {% endfor %}{% endif %}
+        {% endblock %}
       </section>
     </main>
   </body>
