@@ -23,10 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-s+w0*gw9gsq-7b9j)1a*_co1bvbzi4h#wx8@i%r=65%bix!sz='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'white-wildflower-2076.fly.dev']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://white-wildflower-2076.fly.dev'
+]
 
 # Application definition
 
