@@ -2,9 +2,9 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
-from django.utils import timezone
-from models import Income, Expense, CategoryIncome, CategoryExpense
-now = timezone.now()
+from django.utils.timezone import now
+import datetime
+from .models import Income, Expense, CategoryIncome, CategoryExpense
 
 
 # Create your views here.
@@ -101,7 +101,7 @@ def filter_transaction(request):
         from_date = request.POST['from_date']
         to_date = request.POST['to_date']
         if from_date == '':
-            from_date = now - timezone.timedelta(days=360)
+            from_date = now() - datetime.timedelta(days=360)
         if to_date == '':
             to_date = now
         incomes = Income.objects.filter(created_at__range=[from_date, to_date])
