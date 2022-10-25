@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block header %}{% endblock %} {% block content %}
+<form action="{% url 'auth:login %}" method="post">
+    {% csrf_token %}
+    <h3>Login</h3>
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" placeholder="Enter a name">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" placeholder="Enter a password">
+    {% if messages %}{% for message in messages %}
+    <p>{{message}}</p>
+    {% endfor %}{% endif %}
+    <button>Log In</button>
+    <div><a href="{% url 'auth:login' %}">Don't have an account yet ?</a></div>
+</form>
+{% endblock %}
