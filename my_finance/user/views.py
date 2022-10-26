@@ -33,12 +33,12 @@ def _validate_data(username, password):
 
 
 def index(request):
-    return redirect('auth:login')
+    return render(request, 'base.html')
 
 
 def register_view(request):
     if request.method == 'GET':
-        return render(request, 'auth/register.html')
+        return render(request, 'user/auth/register.html')
     elif request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -46,20 +46,20 @@ def register_view(request):
             _validate_data(username, password)
         except BadRequestException as e:
             messages.add_message(request, messages.ERROR, e.msg)
-            return render(request, 'auth/register.html')
+            return render(request, 'user/auth/register.html')
         user_exists = User.objects.filter(username=username).exists()
         if user_exists:
             messages.add_message(request, messages.ERROR, 'User already exists')
-            return render(request, 'auth/register.html')
+            return render(request, 'user/auth/register.html')
         else:
             user = User.objects.create_user(username=username, email=fake.email(), password=password)
             user.save()
-            return redirect('auth:login')
+            return redirect('login')
 
 
 def login_view(request):
     if request.method == 'GET':
-        return render(request, 'auth/login.html')
+        return render(request, 'user/auth/login.html')
     elif request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -67,17 +67,17 @@ def login_view(request):
             _validate_data(username, password)
         except BadRequestException as e:
             messages.add_message(request, messages.ERROR, e.msg)
-            return render(request, 'auth/login.html')
+            return render(request, 'user/auth/login.html')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect(reverse(request, 'transactions:index'))
+            return redirect(reverse(request, 'index'))
         else:
             messages.add_message(request, messages.ERROR, 'Invalid credentials')
-            return render(request, 'auth/login.html')
+            return render(request, 'user/auth/login.html')
 
 
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect('auth:login')
+    return redirect('login')
