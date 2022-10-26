@@ -11,6 +11,7 @@ from .models import Income, Expense, CategoryIncome, CategoryExpense
 def index(request):
     if request.user.is_authenticated:
         return render(request, 'transactions/transactions.html')
+    return render(request, 'base.html')
 
 
 @login_required(login_url='/auth/login')
