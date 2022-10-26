@@ -8,22 +8,27 @@
       href=""
       type="image/x-icon"
     />
-    <link
+    {% load static %}
+    <link type="text/css"
       rel="stylesheet"
-      href=""
+      href="{% static 'admin/css/vendor/select2/select2.min.css' %}"
     />
   </head>
   <body>
     <main class="container">
       <header class="header">
         <nav class="nav">
+          {% if user.is_authenticated %}
           <ul class="nav__list">
-            <li class="nav__item">
-              <a class="nav__link" href="/" role="button">Home</a>
-              <a class="nav__link" href="/transactions" role="button">Transactions</a>
-              <a class="nav__link" href="/report" role="button">Report</a>
-            </li>
-          </ul>
+            <li class="nav__item"><a class="nav__link" href="/" role="button">Home</a> </li>
+            <li class="nav__item"><a class="nav__link" href="/transactions" role="button">Transactions</a> </li>
+            <li class="nav__item"><a class="nav__link" href="/report" role="button">Report</a> </li>
+            <li class="nav__item"><a class="nav__link" href="{% url 'logout' %}" role="button">Logout</a></li>
+          </ul>{% else %}
+          <ul class="nav__list">
+            <li class="nav__item"><a class="nav__link" href="/" role="button">Home</a> </li>
+            <li class="nav__item"><a class="nav__link" href="{% url 'login' %}" role="button">Login</a></li>
+          </ul>{% endif %}
         </nav>
       </header>
       <section class="content">
