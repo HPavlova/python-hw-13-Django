@@ -6,6 +6,7 @@
   <div class="income__container">
     <h2 class="option__title">Incomes</h2>
     <form class="option__form" method="POST" action="/transactions">
+        {% csrf_token %}
         <div>
         <label for="amount_income" class="option__label">Amount</label>
         <input
@@ -42,8 +43,8 @@
         <div>
         <label for="category_income" class="option__label">Category</label>
         <select id="category_income" name="category" class="option__input" size="3">
-            {% for с in category_income %}
-            <option>c</option>
+            {% for с in context.category_income %}
+            <option value="{{c}}">{{c}}</option>
             {% endfor %}
         </select>
         </div>
@@ -54,6 +55,7 @@
   <div class="expense__container">
     <h2 class="title">Expenses</h2>
     <form class="option__form" method="POST" action="/transactions">
+        {% csrf_token %}
         <div>
         <label for="amount_expense" class="option__label">Amount</label>
         <input
@@ -90,8 +92,8 @@
         <div>
         <label for="category_expense" class="option__label">Category</label>
         <select id="category_expense" name="category" class="option__input" size="3">
-            {% for с in category_expense %}
-            <option>c</option>
+            {% for с in context.category_expense %}
+            <option value="{{c}}">{{c}}</option>
             {% endfor %}
         </select>
         </div>
