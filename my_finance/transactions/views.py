@@ -17,8 +17,8 @@ def index(request):
 @login_required(login_url='/auth/login')
 def transactions(request):
     user = request.user
-    category_income = CategoryIncome.objects.filter(user=user)
-    category_expense = CategoryExpense.objects.filter(user=user)
+    category_income = CategoryIncome.objects.filter(user_id=user).all()
+    category_expense = CategoryExpense.objects.filter(user_id=user).all()
     context = {
         'category_income': category_income,
         'category_expense': category_expense,
