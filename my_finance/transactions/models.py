@@ -1,23 +1,23 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
-
-now = timezone.now()
+from django.utils.timezone import now
 
 
 # Create your models here.
 class CategoryIncome(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.TextField(max_length=12, null=False)
 
     def __str__(self):
-        return f"Income categories: {self.category}"
+        return f"{self.category}:{self.user_id}"
 
 
 class CategoryExpense(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.TextField(max_length=12, null=False)
 
     def __str__(self):
-        return f"Expense categories: {self.category}"
+        return f"{self.category}:{self.user_id}"
 
 
 class Income(models.Model):
