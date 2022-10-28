@@ -21,8 +21,8 @@
           {% if user.is_authenticated %}
           <ul class="nav__list">
             <li class="nav__item"><a class="nav__link" href="/" role="button">Home</a> </li>
-            <li class="nav__item"><a class="nav__link" href="/transactions" role="button">Transactions</a> </li>
-            <li class="nav__item"><a class="nav__link" href="/report" role="button">Report</a> </li>
+            <li class="nav__item"><a class="nav__link" href="/transactions" role="button">Transactions</a></li>
+            <li class="nav__item"><a class="nav__link" href="{% url 'report' %}" role="button">Report</a> </li>
             <li class="nav__item"><a class="nav__link" href="{% url 'logout' %}" role="button">Logout</a></li>
           </ul>{% else %}
           <ul class="nav__list">
