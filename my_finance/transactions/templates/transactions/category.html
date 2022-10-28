@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block header %}
+<h1 class="content__title">Categories</h1>{% endblock %}
+{% block content %}
+<div class="option__wrapper">
+  <div class="income__container">
+    <h2 class="option__title">Income Categories</h2>
+    <form class="option__form" method="POST" action="{% url 'category_income' %}">
+        {% csrf_token %}
+        <div>
+        <label for="category_income" class="option__label">Category</label>
+        <input id="category_income" name="category_income" class="option__input" >
+        </div>
+        <button class="button" type="submit">Add Income Category</button>
+    </form>
+  </div>
+
+  <div class="expense__container">
+    <h2 class="title">Expense Categories</h2>
+    <form class="option__form" method="POST" action="{% url 'category_expense' %}">
+        {% csrf_token %}
+        <div>
+        <label for="category_expense" class="option__label">Category</label>
+        <input id="category_expense" name="category" class="option__input">
+        </div>
+        <button class="button" type="submit">Add Expense Category</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
