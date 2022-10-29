@@ -1,17 +1,12 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>My Finance APP</title>
     <link
-      rel="icon"
-      href=""
-      type="image/x-icon"
-    />
-    {% load static %}
-    <link type="text/css"
       rel="stylesheet"
-      href="{% static 'admin/css/vendor/select2/select2.min.css' %}"
+      href="{% static 'admin/css/styles.css' %}"
     />
   </head>
   <body>
@@ -34,10 +29,11 @@
       <section class="content">
         {% block header %}
         <h1 class="content__title">Welcome to My Finance app !</h1>
-        {% endblock %} {% block content %} {% if messages %}{% for message in messages %}
-        <p>{{message}}</p>
-        {% endfor %}{% endif %}
         {% endblock %}
+        {% if messages %}{% for message in messages %}
+        <p class="message error">{{message}}</p>
+        {% endfor %}{% endif %}
+         {% block content %}{% endblock %}
       </section>
     </main>
   </body>

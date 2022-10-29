@@ -43,11 +43,12 @@
         <div>
         <label for="category_income" class="option__label">Category</label>
         <select id="category_income" name="category_income" class="option__input" >
-            {% for с in context.category_income %}
-            <option value="{{c}}">{{c}}</option>
+            <option value="select" selected>Choose a category</option>
+            {% for с in category_income %}
+            <option value="{{c.category}}">{{c.category}}</option>
             {% endfor %}
         </select>
-        <div><a href="{% url 'category_income' %}">Another Category?</a></div>
+        <div  class="option__item"><a href="{% url 'category_income' %}">Another Category?</a></div>
         </div>
         <button class="button" type="submit">Add Income</button>
     </form>
@@ -93,11 +94,12 @@
         <div>
         <label for="category_expense" class="option__label">Category</label>
         <select id="category_expense" name="category" class="option__input">
-            {% for с in context.category_expense %}
-            <option value="{{c}}">{{c}}</option>
+            <option value="select" selected>Choose a category</option>
+            {% for с in category_expense %}
+            <option value="{{c.category}}">{{c.category}}</option>
             {% endfor %}
         </select>
-                    <div><a href="{% url 'category_expense' %}">Another Category?</a></div>
+                    <div class="option__item"><a href="{% url 'category_expense' %}">Another Category?</a></div>
         </div>
         <button class="button" type="submit">Add Expense</button>
     </form>

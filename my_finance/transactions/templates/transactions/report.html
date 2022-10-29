@@ -12,7 +12,7 @@
         <label class="filter__label">to
             <input class="filter__input" id="to_date" name="to_date" type="date">
         </label>
-        <button class="filter__button">Filter</button>
+        <button class="filter__button button">Filter</button>
     </form>
   <table class="table">
       <caption>Incomes</caption>
@@ -29,11 +29,11 @@
       <tfoot>
         <tr>
             <td colspan="6">SUM</td>
-            <td>{{context.incomes_total}}</td>
+            <td>{{incomes_total}}</td>
         </tr>
       </tfoot>
     <tbody>
-      {% for i in context.incomes %}
+      {% for i in incomes %}
       <tr>
         <td>income</td>
         <td>{{i.amount}}</td>
@@ -64,11 +64,11 @@
       <tfoot>
         <tr>
             <td colspan="6">SUM</td>
-            <td>{{context.expense_total}}</td>
+            <td>{{expense_total}}</td>
         </tr>
       </tfoot>
     <tbody>
-      {% for e in context.expenses %}
+      {% for e in expenses %}
       <tr>
         <td>expense</td>
         <td>{{e.amount}}</td>
