@@ -9,7 +9,7 @@ class CategoryIncome(models.Model):
     category = models.TextField(max_length=12, null=False)
 
     def __str__(self):
-        return f"{self.category}:{self.user_id}"
+        return f"{self.category}"
 
 
 class CategoryExpense(models.Model):
@@ -17,7 +17,7 @@ class CategoryExpense(models.Model):
     category = models.TextField(max_length=12, null=False)
 
     def __str__(self):
-        return f"{self.category}:{self.user_id}"
+        return f"{self.category}"
 
 
 class Income(models.Model):
