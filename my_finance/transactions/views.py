@@ -28,6 +28,18 @@ def transactions(request):
 
 
 @login_required(login_url='/auth/login')
+def category_directory(request):
+    user = request.user
+    category_income = CategoryIncome.objects.filter(user_id=user).all()
+    category_expense = CategoryExpense.objects.filter(user_id=user).all()
+    context = {
+        'category_income': category_income,
+        'category_expense': category_expense,
+    }
+    return render(request, 'transactions/categoryDirectory.html', context)
+
+
+@login_required(login_url='/auth/login')
 def report(request):
     user = request.user
     incomes = Income.objects.filter(user_id=user).order_by('-created_at')
@@ -78,32 +90,56 @@ def create_expense_category(request):
 
 
 @login_required(login_url='/auth/login')
+def delete_category_income(request, category_id):
+    category_income = get_object_or_404(CategoryIncome, pk=category_id, user_id=request.user)
+    # category_income = CategoryIncome.objects.get(pk=category_id, user_id=request.user)
+    category_income.delete()
+    messages.success(request, 'Income Category deleted!')
+    return redirect((reverse('category_directory')))
+
+
+@login_required(login_url='/auth/login')
+def delete_category_expense(request, category_id):
+    category_expense = get_object_or_404(CategoryExpense, pk=category_id, user_id=request.user)
+    # category_expense = CategoryExpense.objects.get(pk=category_id, user_id=request.user)
+    category_expense.delete()
+    messages.success(request, 'Income Category deleted!')
+    return redirect((reverse('category_directory')))
+
+
+@login_required(login_url='/auth/login')
 def create_income_transaction(request):
     user = request.user
     category_income = CategoryIncome.objects.filter(user_id=user).all()
+    context = {
+        'category_income': category_income
+    }
     if request.method == 'POST':
         amount = request.POST['amount']
         created_at = request.POST['created_at']
         desc = request.POST['desc']
-        category_income = request.POST['category']
+        category = request.POST['category_income']
         if not amount:
             messages.add_message(request, messages.ERROR, 'Amount is required')
-            return render(request, 'transactions/transactions.html')
+            return render(request, 'transactions/transactions.html', context)
         if created_at == '':
             created_at = now
-        new_income = Income(amount=amount, created_at=created_at, desc=desc, category=category_income)
-        new_income.user_id = request.user.id
+        new_income = Income(amount=amount, created_at=created_at, desc=desc)
+        new_income.user_id = User.objects.get(id=request.user.id)
+        new_income.category = CategoryIncome.objects.get(category=category)
         new_income.save()
         messages.success(request, 'Transaction added!')
-        return
-    context = {
-        'category_income': category_income
-    }
+        return render(request, 'transactions/transactions.html', context)
     return render(request, 'transactions/transactions.html', context)
 
 
 @login_required(login_url='/auth/login')
 def create_expense_transaction(request):
+    user = request.user
+    category_income = CategoryIncome.objects.filter(user_id=user).all()
+    context = {
+        'category_income': category_income
+    }
     if request.method == 'POST':
         amount = request.POST['amount']
         created_at = request.POST['created_at']
@@ -111,27 +147,28 @@ def create_expense_transaction(request):
         category = request.POST['category']
         if not amount:
             messages.add_message(request, messages.ERROR, 'Amount is required')
-            return render(request, 'transactions/transactions.html')
+            return render(request, 'transactions/transactions.html', context)
         if created_at == '':
             created_at = now
-        new_expense = Expense(amount=amount, created_at=created_at, desc=desc, category=category)
-        new_expense.user_id = request.user.id
+        new_expense = Expense(amount=amount, created_at=created_at, desc=desc)
+        new_expense.user_id = User.objects.get(id=request.user.id)
+        new_expense.category = CategoryExpense.objects.get(category=category)
         new_expense.save()
         messages.success(request, 'Transaction added!')
-        return
-    return render(request, 'transactions/transactions.html')
+        return render(request, 'transactions/transactions.html', context)
+    return render(request, 'transactions/transactions.html', context)
 
 
 @login_required(login_url='/auth/login')
 def delete_income_transaction(request, income_id):
-    income = get_object_or_404(Income, pk=income_id, user=request.user)
+    income = get_object_or_404(Income, pk=income_id, user_id=request.user)
     income.delete()
     return redirect((reverse('transactions/report.html')))
 
 
 @login_required(login_url='/auth/login')
 def delete_expense_transaction(request, expense_id):
-    expense = get_object_or_404(Expense, pk=expense_id, user=request.user)
+    expense = get_object_or_404(Expense, pk=expense_id, user_id=request.user)
     expense.delete()
     return redirect((reverse('transactions/report.html')))
 
