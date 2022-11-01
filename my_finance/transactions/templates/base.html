@@ -18,6 +18,7 @@
             <li class="nav__item"><a class="nav__link" href="/" role="button">Home</a> </li>
             <li class="nav__item"><a class="nav__link" href="/transactions" role="button">Transactions</a></li>
             <li class="nav__item"><a class="nav__link" href="{% url 'report' %}" role="button">Report</a> </li>
+            <li class="nav__item"><a class="nav__link" href="{% url 'category_directory' %}" role="button">Category Directory</a></li>
             <li class="nav__item"><a class="nav__link" href="{% url 'logout' %}" role="button">Logout</a></li>
           </ul>{% else %}
           <ul class="nav__list">
@@ -30,10 +31,14 @@
         {% block header %}
         <h1 class="content__title">Welcome to My Finance app !</h1>
         {% endblock %}
-        {% if messages %}{% for message in messages %}
-        <p class="message error">{{message}}</p>
-        {% endfor %}{% endif %}
-         {% block content %}{% endblock %}
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li class="{{message.tags}}">{{message|safe}}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %} {% block content %}{% endblock %}
       </section>
     </main>
   </body>

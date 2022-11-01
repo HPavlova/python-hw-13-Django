@@ -8,9 +8,6 @@
     <label for="password">Password</label>
     <input class="register__input" type="password" id="password" name="password" placeholder="Enter a password">
     <button class="button">Register</button>
-    {% if messages %}{% for message in messages %}
-    <p>{{message}}</p>
-    {% endfor %}{% endif %}
     <div class="register__item"><a href="{% url 'login' %}">Already have an account?</a></div>
 </form>
 {% endblock %}

@@ -5,7 +5,7 @@
 <div class="option__wrapper">
   <div class="income__container">
     <h2 class="option__title">Incomes</h2>
-    <form class="option__form" method="POST" action="/transactions">
+    <form class="option__form" method="POST" action="/transactionsincome">
         {% csrf_token %}
         <div>
         <label for="amount_income" class="option__label">Amount</label>
@@ -42,9 +42,9 @@
         </div>
         <div>
         <label for="category_income" class="option__label">Category</label>
-        <select id="category_income" name="category_income" class="option__input" >
+        <select id="category_income" name="category_income" class="option__input" required>
             <option value="select" selected>Choose a category</option>
-            {% for с in category_income %}
+      {% for c in category_income %}
             <option value="{{c.category}}">{{c.category}}</option>
             {% endfor %}
         </select>
@@ -56,7 +56,7 @@
 
   <div class="expense__container">
     <h2 class="title">Expenses</h2>
-    <form class="option__form" method="POST" action="/transactions">
+    <form class="option__form" method="POST" action="/transactionsexpense">
         {% csrf_token %}
         <div>
         <label for="amount_expense" class="option__label">Amount</label>
@@ -95,11 +95,11 @@
         <label for="category_expense" class="option__label">Category</label>
         <select id="category_expense" name="category" class="option__input">
             <option value="select" selected>Choose a category</option>
-            {% for с in category_expense %}
+            {% for c in category_expense %}
             <option value="{{c.category}}">{{c.category}}</option>
             {% endfor %}
         </select>
-                    <div class="option__item"><a href="{% url 'category_expense' %}">Another Category?</a></div>
+            <div class="option__item"><a href="{% url 'category_expense' %}">Another Category?</a></div>
         </div>
         <button class="button" type="submit">Add Expense</button>
     </form>
