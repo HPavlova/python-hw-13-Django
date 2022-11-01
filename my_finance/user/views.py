@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django import forms
 from django.contrib import messages
-from django.urls import reverse
 from faker import Faker
 fake = Faker()
 
@@ -54,6 +53,7 @@ def register_view(request):
         else:
             user = User.objects.create_user(username=username, email=fake.email(), password=password)
             user.save()
+            messages.add_message(request, messages.SUCCESS, 'You have successfully registered!')
             return redirect('login')
 
 
